@@ -1,0 +1,1 @@
+notify-send -i ~/Images/Downloads/dog.jpg  "Sleeping" "Ngu ik do ngok" && paplay ~/Downloads/Music/beep.wav

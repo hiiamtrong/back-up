@@ -1,0 +1,22 @@
+#!/bin/zsh
+collection=$1
+limit=$3
+sort=$2
+query=$4
+if [ -z $1 ]
+then
+	echo "Chua nhap tham so"
+	exit
+fi
+if ([ -z $2 ] || [ -z $3 ] || -z $4)
+then
+	 mongoexport --uri "mongodb://trong:trongtrongtrong@db-vt.4-handy.com:27017/4handy-work" --collection=$collection --out=/home/trongdev/Work/work-4handy-db-clone/$collection.json
+	 notify-send -i ~/Images/Downloads/mongo.jpg "Mongo-export" "Done"
+paplay ~/Downloads/Music/beep.wav
+	exit
+fi
+ mongoexport --uri "mongodb://trong:trongtrongtrong@db-vt.4-handy.com:27017/4handy-work" --sort={$sort:-1} --limit=$limit --collection=$collection --out=/home/trongdev/Work/work-4handy-db-clone/$collection.json
+notify-send -i ~/Images/Downloads/mongo.jpg "Mongo-export" "Done"
+paplay ~/Downloads/Music/beep.wav
+
+exit

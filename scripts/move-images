@@ -1,0 +1,30 @@
+#!/bin/zsh
+	month=`date +%m`
+	day=`date +%d`
+	year=`date +%Y`
+echo $year$month$day
+files=$(find ~/Images -type f | grep $year$month$day)
+	mkdir -p ~/Images/Date/$year-$month/$day
+for i in $(echo $files | tr "\n" " ")
+do
+	mv $i ~/Images/Date/$year-$month/$day
+done
+i=1
+while [ $i -le 20 ]
+do
+	month=`date --date="$i days ago" +%m`
+	day=`date --date="$i days ago" +%d`
+	year=`date --date="$i days ago" +%Y`
+	echo $year$month$day 
+	echo $i
+	files=$(find ~/Images -type f | grep $year$month$day)
+	mkdir -p ~/Images/Date/$year-$month/$day
+	echo $files
+	for j in $(echo $files | tr " " " ")
+	do
+		mv $j ~/Images/Date/$year-$month/$day
+	done
+	i=`expr $i + 1`
+	
+done
+notify-send -i ~/Images/Downloads/tick.png "Move Images" "Done" && paplay ~/Downloads/Music/beep.wav

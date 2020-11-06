@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+database=$1
+collection=$2
+if [ -z $1 ]
+then
+	echo "Chua nhap tham so"
+	exit
+fi
+mongoimport --uri "mongodb://localhost:27017/$database" --drop --collection=$collection --file=/home/trongdev/Work/work-4handy-db-clone/$collection.json
+notify-send -i ~/Images/Downloads/mongo.jpg "Mongo-import" "Done"
+paplay ~/Downloads/Music/beep.wav
+
