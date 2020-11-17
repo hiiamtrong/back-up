@@ -3,6 +3,7 @@ collection=$1
 limit=$3
 sort=$2
 query=$4
+mkdir -p /home/$USER/work/work-4handy-db-clone
 if [ -z $1 ]
 then
 	echo "Chua nhap tham so"
@@ -10,13 +11,13 @@ then
 fi
 if ([ -z $2 ] || [ -z $3 ] || -z $4)
 then
-	 mongoexport --uri "mongodb://trong:trongtrongtrong@db-vt.4-handy.com:27017/4handy-work" --collection=$collection --out=/home/trongdev/Work/work-4handy-db-clone/$collection.json
-	 notify-send -i ~/Images/Downloads/mongo.jpg "Mongo-export" "Done"
-paplay ~/Downloads/Music/beep.wav
+	 mongoexport --uri $MONGO_URL --collection=$collection --out=/home/$USER/work/work-4handy-db-clone/$collection.json
+	notify-send -i ./public/mongo.png "Mongo-export" "Done"
+paplay ./public/success.wav
 	exit
 fi
- mongoexport --uri "mongodb://trong:trongtrongtrong@db-vt.4-handy.com:27017/4handy-work" --sort={$sort:-1} --limit=$limit --collection=$collection --out=/home/trongdev/Work/work-4handy-db-clone/$collection.json
-notify-send -i ~/Images/Downloads/mongo.jpg "Mongo-export" "Done"
-paplay ~/Downloads/Music/beep.wav
+ mongoexport --uri $MONGO_URL --sort={$sort:-1} --limit=$limit --collection=$collection --out=/home/$USER/work/work-4handy-db-clone/$collection.json
+notify-send -i ./public/mongo.png "Mongo-export" "Done"
+paplay ./public/success.wav
 
 exit

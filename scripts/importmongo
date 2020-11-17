@@ -2,12 +2,12 @@
 
 database=$1
 collection=$2
+mkdir -p /home/$USER/work/work-4handy-db-clone
 if [ -z $1 ]
 then
 	echo "Chua nhap tham so"
 	exit
 fi
-mongoimport --uri "mongodb://localhost:27017/$database" --drop --collection=$collection --file=/home/trongdev/Work/work-4handy-db-clone/$collection.json
-notify-send -i ~/Images/Downloads/mongo.jpg "Mongo-import" "Done"
-paplay ~/Downloads/Music/beep.wav
-
+mongoimport --uri "mongodb://localhost:27017/$database" --drop --collection=$collection --file=/home/$USER/work/work-4handy-db-clone/$collection.json
+notify-send -i ./public/mongo.png "Mongo-import" "Done"
+paplay ./public/success.wav

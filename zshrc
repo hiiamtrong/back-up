@@ -9,7 +9,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 #export PS1="\W \~"
 # Path to your oh-my-zsh installation.
-export ZSH="/home/trongdev/.oh-my-zsh"
+export ZSH="/home/$USER/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -75,7 +75,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git git zsh-z zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git git z zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -121,7 +121,6 @@ alias rs='shutdown -r now'
 alias startmongo='sudo systemctl start mongodb'
 alias showmongo='sudo systemctl status mongodb'
 alias killmongo='sudo systemctl stop mongodb'
-alias code='code-insiders'
 alias ..='cd ../'
 alias ....="cd ../../"
 alias starttouchpad="synclient TouchpadOff=0"
@@ -130,57 +129,11 @@ alias networkrestart="sudo systemctl restart netctl wpa_supplicant NetworkManage
 alias networkstatus="sudo systemctl status NetworkManager netctl wpa_supplicant"
 alias stopkey="xinput disable 13"    
 alias startkey="xinput enable 13"
-alias raminfo="sudo dmidecode --type 17"
-alias open="dolphin"
-alias op="thunar"
 alias azure="ssh trongdev@13.76.37.227"
-DEFAULT_USER="trongdev"
-ibus-daemon -drx 
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-# export QT_IM_MODULE=ibus
-synclient VertScrollDelta=-58
-synclient HorizScrollDelta=-58
-synclient TapButton1=1
-synclient TapButton2=3
-#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=60' 
-#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff,bg=cyan,bold,underline"
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-#sudo sysctl -w vm.swappiness=10
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/trongdev/.sdkman"
-[[ -s "/home/trongdev/.sdkman/bin/sdkman-init.sh" ]] && source "/home/trongdev/.sdkman/bin/sdkman-init.sh"
-export ANDROID_HOME=$HOME/Android/Sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/tools/bin
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-export PATH=$PATH:$HOME/Scripts/
-export ANDROID_SDK_ROOT=$HOME/Android/Sdk/
-export PATH=$ANDROID_HOME/emulator:$ANDROID_SDK/tools:$PATH
-export EDITOR=/usr/bin/nano
+export PATH=$PATH:$HOME/scripts/
 alias zcloud="ssh trong@zcloud.4-handy.com"
 alias storage="sudo du -hsx * | sort -rh | head -10"
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/anaconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/anaconda/etc/profile.d/conda.sh" ]; then
-        . "/opt/anaconda/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/anaconda/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-alias py3="python3"
+alias py="python3"
 alias bandwidth="speedtest"
 alias kdata="ssh trong@103.109.37.118"
 #pass = quantrimang
@@ -188,3 +141,9 @@ alias webwork="ssh webwork@server2-kdata.4-handy.com"
 #pass mothaiba@123a
 alias mongolog="ssh trong@vps2-viettel.4-handy.com"
 #pass
+alias tar="tar -xzf"
+alias weather="curl wttr.in/hanoi"
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+export PATH="/usr/local/opt/sqlite/bin:$PATH"
+export MONGO_URL="mongodb://trong:trongtrongtrong@db-vt.4-handy.com:27017/4handy-work"

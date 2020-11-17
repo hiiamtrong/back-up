@@ -4,28 +4,24 @@ limit=$3
 sort=$2
 query=$4
 database="4handy-work-dev"
-if [ -z $1 ]
+mkdir -r /home/$USER/work/work-4handy-db-clone
+if ([ -z $2 ] || [ -z $3 ])
 then
-	echo "Chua nhap tham so"
+	 mongoexport --uri $MONGO_URL --collection=$collection --out=/home/$USER/work/work-4handy-db-clone/$collection.json
+	 notify-send -i ./public/mongo.png "Mongo-export" "Done"
+paplay ./public/success.wav
+
+mongoimport --uri "mongodb://localhost:27017/$database" --drop --collection=$collection --file=/home/$USER/work/work-4handy-db-clone/$collection.json
+notify-send -i notify-send -i ./public/mongo.png "Mongo-import" "Done"
+paplay ./public/success.wav	
 	exit
 fi
-if ([ -z $2 ] || [ -z $3 ] || -z $4)
-then
-	 mongoexport --uri "mongodb://trong:trongtrongtrong@db-vt.4-handy.com:27017/4handy-work" --collection=$collection --out=/home/trongdev/Work/work-4handy-db-clone/$collection.json
-	 notify-send -i ~/Images/Downloads/mongo.jpg "Mongo-export" "Done"
-paplay ~/Downloads/Music/beep.wav
-mongoimport --uri "mongodb://localhost:27017/$database" --drop --collection=$collection --file=/home/trongdev/Work/work-4handy-db-clone/$collection.json
-notify-send -i ~/Images/Downloads/mongo.jpg "Mongo-import" "Done"
-paplay ~/Downloads/Music/beep.wav	
-	exit
-fi
- mongoexport --uri "mongodb://trong:trongtrongtrong@db-vt.4-handy.com:27017/4handy-work" --sort={$sort:-1} --limit=$limit --collection=$collection --out=/home/trongdev/Work/work-4handy-db-clone/$collection.json
-notify-send -i ~/Images/Downloads/mongo.jpg "Mongo-export" "Done"
-paplay ~/Downloads/Music/beep.wav
+ mongoexport --uri $MONGO_URL --sort={$sort:-1} --limit=$limit --collection=$collection --out=/home/$USER/work/work-4handy-db-clone/$collection.json
+notify-send -i notify-send -i ./public/mongo.png "Mongo-export" "Done"
+paplay ./public/success.wav
 
 
-mongoimport --uri "mongodb://localhost:27017/$database" --drop --collection=$collection --file=/home/trongdev/Work/work-4handy-db-clone/$collection.json
-notify-send -i ~/Images/Downloads/mongo.jpg "Mongo-import" "Done"
-paplay ~/Downloads/Music/beep.wav
-
+mongoimport --uri "mongodb://localhost:27017/$database" --drop --collection=$collection --file=/home/$USER/work/work-4handy-db-clone/$collection.json
+notify-send -i notify-send -i ./public/mongo.png "Mongo-import" "Done"
+paplay ./public/success.wav
 exit
