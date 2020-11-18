@@ -5,25 +5,25 @@ sort=$2
 query=$4
 database="4handy-work-dev"
 folder="/home/$USER/work/work-4handy-db-clone"
+public="/home/$USER/scripts/public"
 mkdir -p $folder 
-startweb
 if ([ -z $2 ] || [ -z $3 ])
 then
 	 mongoexport --uri $MONGO_URL --collection=$collection --out=$folder/$collection.json
-	 notify-send -i public/mongo.png "Mongo-export" "Done"
-paplay public/success.wav
+	 notify-send -i $public/mongo.png "Mongo-export" "Done"
+paplay $public/success.wav
 
 mongoimport --uri "mongodb://localhost:27017/$database" --drop --collection=$collection --file=$folder/$collection.json
-notify-send -i notify-send -i public/mongo.png "Mongo-import" "Done"
-paplay public/success.wav	
+notify-send -i  $public/mongo.png "Mongo-import" "Done"
+paplay $public/success.wav	
 	exit
 fi
  mongoexport --uri $MONGO_URL --sort={$sort:-1} --limit=$limit --collection=$collection --out=$folder/$collection.json
-notify-send -i notify-send -i public/mongo.png "Mongo-export" "Done"
-paplay public/success.wav
+notify-send -i  $public/mongo.png "Mongo-export" "Done"
+paplay $public/success.wav
 
 
 mongoimport --uri "mongodb://localhost:27017/$database" --drop --collection=$collection --file=$folder/$collection.json
-notify-send -i notify-send -i public/mongo.png "Mongo-import" "Done"
-paplay public/success.wav
+notify-send -i $public/mongo.png "Mongo-import" "Done"
+paplay $public/success.wav
 exit

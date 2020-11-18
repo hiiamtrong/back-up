@@ -4,6 +4,7 @@ limit=$3
 sort=$2
 query=$4
 folder="/home/$USER/work/work-4handy-db-clone"
+public="/home/$USER/scripts/public"
 mkdir -p $folder 
 if [ -z $1 ]
 then
@@ -13,12 +14,12 @@ fi
 if ([ -z $2 ] || [ -z $3 ] )
 then
 	 mongoexport --uri $MONGO_URL --collection=$collection --out=$folder/$collection.json
-	notify-send -i public/mongo.png "Mongo-export" "Done"
-paplay public/success.wav
+	notify-send -i $public/mongo.png "Mongo-export" "Done"
+paplay $public/success.wav
 	exit
 fi
  mongoexport --uri $MONGO_URL --sort={$sort:-1} --limit=$limit --collection=$collection --out=$folder/$collection.json
-notify-send -i public/mongo.png "Mongo-export" "Done"
-paplay public/success.wav
+notify-send -i $public/mongo.png "Mongo-export" "Done"
+paplay $public/success.wav
 
 exit
