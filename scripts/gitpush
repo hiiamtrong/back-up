@@ -1,0 +1,19 @@
+#!/bin/zsh
+RED='\033[0;31m'
+existsgit=`{find -name '.git'}`
+if [ -z $existsgit ]
+then
+    echo "${RED} Không tìm thấy repo git"
+    exit 1
+fi
+branch=`{git branch --show-current}`
+if [ $branch==master ]
+then
+    echo "${RED} Không được push master"
+    exit 1
+fi
+echo "end"
+git push --set-upstream origin $branch
+
+
+
