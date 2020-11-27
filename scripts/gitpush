@@ -3,17 +3,22 @@ RED='\033[0;31m'
 existsgit=`{find -name '.git'}`
 if [ -z $existsgit ]
 then
-    echo "${RED} Không tìm thấy repo git"
+    echo "${RED} Không tìm thấy .git"
     exit 1
 fi
 branch=`{git branch --show-current}`
-if [ $branch==master ]
+if [ -z $branch ]
 then
-    echo "${RED} Không được push master"
+    echo "${RED} Chưa có repo nào tại thư mục này"
     exit 1
 fi
-echo "end"
+if [ $branch = "master" ]
+then
+    echo "${RED} Không được push tại branch master"
+    exit 1
+fi
 git push --set-upstream origin $branch
+
 
 
 
