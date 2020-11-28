@@ -20,16 +20,17 @@ def get_task_gitlab():
     tasks = requests.get(url_gitlab).json()
     tasks_text = ''
     for task in tasks:
-        approve_status = 'approved' if task['merge_status'] != 'unchecked' else 'unapproved'
-        if 'Draft' not in task['title']:
-            tasks_text += f'- [*{approve_status}*] [{task.get("title")}]({task.get("web_url")}) update gần nhất: **{moment.date(task.get("updated_at")).format("YYYY-M-D h:m A")}**\n'
+        approve_status = f' :white_check_mark: *{task["merge_status"]}*' if task[
+            'merge_status'] != 'unchecked' else ': warning: *{task["merge_status"]}*'
+        if not task['work_in_progress']:
+            tasks_text += f'- [{approve_status}] [{task.get("title")}]({task.get("web_url")}) update gần nhất: **{moment.date(task.get("updated_at")).format("YYYY-M-D h:m A")}** - {task["user_notes_count"]} comments\n'
     return tasks_text
 
 
 lists = {
-    "5e5e1391e3c0053b8a4ecadd": "Todo",
-    "5958d058ce48d6ee6e437912": "Doing",
-    "5f8926abf5f741310a8c695d": "Draft"
+    "5e5e1391e3c0053b8a4ecadd": ":pencil: *Todo*",
+    "5958d058ce48d6ee6e437912": ":bulb: *Doing*",
+    "5f8926abf5f741310a8c695d": ":wrench: *Draft*"
 }
 
 
@@ -59,12 +60,12 @@ def get_task_trello():
             if card.get('due', ''):
                 due = moment.date(card.get('due')).format(
                     'YYYY-M-D h: m A')
-            cards_text += f"- [*{status}*] [{card['name']}]({card['shortUrl']}) due: **{due}**\n"
+            cards_text += f"- [{status}] [{card['name']}]({card['shortUrl']}) due: **{due}**\n"
     return cards_text
 
 
 def main():
-    result = f'=======Doing=======\n{get_task_trello()}\n========QC========\n{get_task_gitlab()}'
+    result = f'=======Doing=======\n{get_task_trello()}\n========QC========\n{get_task_gitlab() if get_task_gitlab() else "Không có"}'
     print(result)
     pyperclip.copy(result)
 
