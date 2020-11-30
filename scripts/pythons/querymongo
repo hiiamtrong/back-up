@@ -1,0 +1,8 @@
+#!/bin/zsh
+if [ -z $1 ]
+then
+    limit=1
+else
+    limit=$1
+fi
+python3 /home/$USER/scripts/pythons/querymongo.py $limit
