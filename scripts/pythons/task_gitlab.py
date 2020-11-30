@@ -21,7 +21,7 @@ def get_task_gitlab():
     tasks_text = ''
     for task in tasks:
         approve_status = f' :white_check_mark: *{task["merge_status"]}*' if task[
-            'merge_status'] != 'unchecked' else ': warning: *{task["merge_status"]}*'
+            'merge_status'] != 'unchecked' else f' :warning: *{task["merge_status"]}*'
         if not task['work_in_progress']:
             tasks_text += f'- [{approve_status}] [{task.get("title")}]({task.get("web_url")}) update gần nhất: **{moment.date(task.get("updated_at")).format("YYYY-M-D h:m A")}** - {task["user_notes_count"]} comments\n'
     return tasks_text
