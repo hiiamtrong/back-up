@@ -5,4 +5,4 @@ then
 else
     limit=$1
 fi
-python3 /home/$USER/scripts/pythons/querymongo.py $limit
+python3 /home/$USER/back-up/scripts/pythons/querymongo.py $limit

@@ -3,13 +3,13 @@
 database=$1
 collection=$2
 folder="/home/$USER/work/work-4handy-db-clone"
-public="/home/$USER/scripts/public"
-mkdir -p $folder 
+public="/home/$USER/back-up/scripts/public"
+mkdir -p $folder
 
 if [ -z $1 ]
 then
-	echo "Chua nhap tham so"
-	exit
+    echo "Chua nhap tham so"
+    exit
 fi
 startweb
 mongoimport --uri "mongodb://localhost:27017/$database" --drop --collection=$collection --file=$folder/$collection.json
