@@ -43,14 +43,14 @@ def get_task_trello():
         'token': f'{trello["ACCESS_TOKEN_TRELLO"]}',
         'key': f'{trello["KEY"]}',
     }
-    path = open('./cards-trello.json', 'w')
+    # path = open('./cards-trello.json', 'w')
     response = requests.request(
         "GET",
         url_trello,
         params=query,
         headers=headers,
     )
-    path.write(response.text)
+    # path.write(response.text)
     cards = response.json()
     cards_text = ''
     for card in cards:
