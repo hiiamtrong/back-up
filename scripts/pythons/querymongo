@@ -1,8 +1,42 @@
 #!/bin/zsh
-if [ -z $1 ]
+limit=1
+env="dev"
+helpFunction()
+{
+    echo ""
+    echo "Usage: $0 -l or --limit parameterA -e or --environment"
+    echo -e "\t-l or --limit: quantiy of documents what do you want to get"
+    echo -e "\t-e or --environment: environment what do you want to use. Ex: production | prod or development | dev"
+    echo -e "\t-c or --collection: collection what do you want to use. Ex: users (updated)"
+    echo -e "\t-h or --help: to refer documentation"
+    exit 1 # Exit script after printing help
+}
+# $@ is all params that you add to
+for ARGS in "$@"; do
+    # remove each first params after loop
+    shift
+    case "$ARGS" in
+        "--limit") set -- "$@" "-l" ;;
+        "--environment") set -- "$@" "-e" ;;
+        "--help") set -- "$@" "-h" ;;
+        *) set -- "$@" "$ARGS"
+    esac
+done
+#note: if you want to
+while getopts "l:e:h" opt;
+do
+    case "$opt" in
+        l ) limit="$OPTARG" ;;
+        e ) env="$OPTARG" ;;
+        h ) helpFunction
+        ;;
+        ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
+    esac
+done
+# Begin script in case all parameters are correct
+if [ $env != 'dev' ] && [ $env != 'prod' ]
 then
-    limit=1
-else
-    limit=$1
+    echo "Argument environment is wrong, expect 'prod' or 'dev' "
+    exit 1
 fi
-python3 /home/$USER/back-up/scripts/pythons/querymongo.py $limit
+python3 /home/$USER/back-up/scripts/pythons/querymongo.py $limit $env
