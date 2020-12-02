@@ -1,6 +1,7 @@
 #!/bin/zsh
 limit=1
 env="dev"
+collection="usertagentries"
 helpFunction()
 {
     echo ""
@@ -18,16 +19,18 @@ for ARGS in "$@"; do
     case "$ARGS" in
         "--limit") set -- "$@" "-l" ;;
         "--environment") set -- "$@" "-e" ;;
+        "--collection") set -- "$@" "-c" ;;
         "--help") set -- "$@" "-h" ;;
         *) set -- "$@" "$ARGS"
     esac
 done
 #note: if you want to
-while getopts "l:e:h" opt;
+while getopts "l:e:c:h" opt;
 do
     case "$opt" in
         l ) limit="$OPTARG" ;;
         e ) env="$OPTARG" ;;
+        c ) collection="$OPTARG";;
         h ) helpFunction
         ;;
         ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
@@ -39,4 +42,4 @@ then
     echo "Argument environment is wrong, expect 'prod' or 'dev' "
     exit 1
 fi
-python3 /home/$USER/back-up/scripts/pythons/querymongo.py $limit $env
+python3 /home/$USER/back-up/scripts/pythons/querymongo.py $limit $env $collection
