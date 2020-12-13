@@ -1,3 +1,0 @@
-#!/bin/zsh
-
-python3 /home/$USER/back-up/scripts/pythons/task_gitlab.py
