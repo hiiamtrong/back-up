@@ -1,5 +1,9 @@
+import os
+TRELLO_USER_ID = os.environ.get('TRELLO_USER_ID')
+TRELL_ACCESS_TOKEN = os.environ.get('TRELL_ACCESS_TOKEN')
+TRELLO_KEY = os.environ.get('TRELLO_KEY')
 trello = {
-    "USER_ID": "5ea7a2cf1fd8450d3c7bdfe8",
-    'ACCESS_TOKEN_TRELLO': "243a673d31dee1be1412a5b80c86652402ef98f1c9dac02c7a3844c3c060baf8",
-    'KEY': 'b03babd66783d968892a66a186e8e680'
+    "USER_ID": TRELLO_USER_ID,
+    'ACCESS_TOKEN_TRELLO': TRELL_ACCESS_TOKEN,
+    'KEY': TRELLO_KEY
 }

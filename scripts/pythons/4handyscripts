@@ -1,11 +1,13 @@
 #!/bin/zsh
 
 folder="/home/$USER/back-up/scripts/pythons"
+touch $folder/boards-trello.json
 touch $folder/output.json
 touch $folder/cards-trello.json
 touch $folder/labels-trello.json
 touch $folder/custom-field-trello.json
 touch $folder/lists-trello.json
 touch $folder/members-trello.json
+# credentials.json
 
 python3 $folder/4handyscripts.py
