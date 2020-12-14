@@ -1,4 +1,5 @@
 
+import json
 import callapi
 import calcpoint
 import requests
@@ -7,8 +8,10 @@ from gitlabAgent import gitlab
 import moment
 import pyperclip
 import sheet
+import os.path
+current_path = os.path.dirname(os.path.abspath(__file__))
 
-import json
+
 lists = {
     "5e5e1391e3c0053b8a4ecadd": ":pencil: *Todo*",
     "5958d058ce48d6ee6e437912": ":bulb: *Doing*",
@@ -29,7 +32,7 @@ def get_task_gitlab():
 
 
 def get_task_trello():
-    path_cards = open('./cards-trello.json')
+    path_cards = open(f'{current_path}/cards-trello.json')
     cards = json.loads(path_cards.read())
     cards_text = ''
     for card in cards:
@@ -44,7 +47,7 @@ def get_task_trello():
 
 
 def option_summary_point():
-    path_labels = open('./labels-trello.json')
+    path_labels = open(f'{current_path}/labels-trello.json')
     labels = json.loads(path_labels.read())
     labels_map = {}
     for index, label in enumerate(labels):
@@ -53,7 +56,7 @@ def option_summary_point():
         labels_map[f'{index}'] = label['name']
     label = input('Nhập label: ')
     result = calcpoint.calc_point_trello(trello, labels_map[label])
-    path_test = open('./output.json', 'w')
+    path_test = open(f'{current_path}/output.json', 'w')
     path_test.write(json.dumps(result))
     sheet.init(result)
     return False

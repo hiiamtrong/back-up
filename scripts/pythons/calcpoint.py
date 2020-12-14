@@ -4,13 +4,16 @@ import pydash as _
 import requests
 import asyncio
 import aiohttp
+import os.path
+current_path = os.path.dirname(os.path.abspath(__file__))
+
 # initial
 callapi.init()
-path_cards = open('./cards-trello.json')
-path_custom_fields = open('./custom-field-trello.json')
-path_custom_members = open('./members-trello.json')
-path_lists = open('./lists-trello.json')
-path_labels = open('./labels-trello.json')
+path_cards = open(f'{current_path}/cards-trello.json')
+path_custom_fields = open(f'{current_path}/custom-field-trello.json')
+path_custom_members = open(f'{current_path}/members-trello.json')
+path_lists = open(f'{current_path}/lists-trello.json')
+path_labels = open(f'{current_path}/labels-trello.json')
 cards = json.loads(path_cards.read())
 custom_fields = json.loads(path_custom_fields.read())
 members = json.loads(path_custom_members.read())

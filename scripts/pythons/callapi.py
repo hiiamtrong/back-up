@@ -1,5 +1,7 @@
 import requests
 from trelloAgent import trello
+import os.path
+current_path = os.path.dirname(os.path.abspath(__file__))
 
 
 def init():
@@ -42,11 +44,11 @@ def init():
         params=query,
         headers=headers,
     )
-    path_cards = open('./cards-trello.json', 'w')
-    path_custom_fields = open('./custom-field-trello.json', 'w')
-    path_custom_members = open('./members-trello.json', 'w')
-    path_custom_lists = open('./lists-trello.json', 'w')
-    path_labels = open('./labels-trello.json', 'w')
+    path_cards = open(f'{current_path}/cards-trello.json', 'w')
+    path_custom_fields = open(f'{current_path}/custom-field-trello.json', 'w')
+    path_custom_members = open(f'{current_path}/members-trello.json', 'w')
+    path_custom_lists = open(f'{current_path}/lists-trello.json', 'w')
+    path_labels = open(f'{current_path}/labels-trello.json', 'w')
     path_cards.write(response_cards.text)
     path_custom_fields.write(response_custom_fields.text)
     path_custom_members.write(response_members.text)

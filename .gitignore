@@ -1,5 +1,5 @@
 cards-trello.json
 env-web-work
-*.json
-!credentials.json
+pythons/*.json
 *.pyc
+__pycache__
