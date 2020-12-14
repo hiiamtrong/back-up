@@ -1,5 +1,5 @@
-cards-trello.json
 env-web-work
-pythons/*.json
+*.json
 *.pyc
 __pycache__
+token.pickle
