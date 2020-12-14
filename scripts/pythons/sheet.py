@@ -1,4 +1,5 @@
 from __future__ import print_function
+import pickle
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
@@ -6,8 +7,7 @@ import os.path
 from datetime import date
 import json
 import pydash as _
-from json import loads, dumps
-import pickle
+
 current_path = os.path.dirname(os.path.abspath(__file__))
 credentials_path = f'{current_path}/credentials.json'
 
@@ -119,6 +119,8 @@ def insert_users(data_with_range, cols, data):
     lists_title = [
         list(lists.keys())
     ]
+    if(not len(user_names)):
+        raise Exception('Label không có tasks')
     data_with_range.extend([
         {
             'range': f'A{current_row}:A{len(user_names[0])+current_row}',
