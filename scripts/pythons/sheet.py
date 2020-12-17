@@ -64,7 +64,8 @@ def init(data):
     data_with_range = []
     current_col, max_row = insert_lists(data_with_range, cols, data)
     format(0, max_row, 0, current_col, service, spreadsheetId)
-    current_row = insert_users(data_with_range, cols, data)
+    row = max_row+10
+    current_row = insert_users(data_with_range, cols, data, row)
     format(row-1, current_row-1, 0, current_col, service, spreadsheetId)
     body = {
         'valueInputOption': "USER_ENTERED",
@@ -110,7 +111,7 @@ def insert_lists(data_with_range, cols, data):
     return (curren_col+1, max_row)
 
 
-def insert_users(data_with_range, cols, data):
+def insert_users(data_with_range, cols, data, row):
     current_row = row+1
     users = data.get('users')
     user_names = list(users.keys())

@@ -10,7 +10,7 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 # initial
 callapi.init()
 path_cards = open(f'{current_path}/cards-trello.json')
-path_custom_fields = open(f'{current_path}/custom-field-trello.json')
+path_custom_fields = open(f'{current_path}/customFields-trello.json')
 path_custom_members = open(f'{current_path}/members-trello.json')
 path_lists = open(f'{current_path}/lists-trello.json')
 path_labels = open(f'{current_path}/labels-trello.json')
@@ -40,24 +40,6 @@ for list in lists:
         lists_map[list['id']] = list['name']
 for label in labels:
     labels_map[label['id']] = label['name']
-
-
-async def get_point(card, trello_credential):
-    url_trello = f'https://api.trello.com/1/cards/{card["id"]}customFieldItems'
-    headers = {
-        "Accept": "application/json"
-    }
-    query = {
-        'token': f'{trello_credential["ACCESS_TOKEN_TRELLO"]}',
-        'key': f'{trello_credential["KEY"]}',
-    }
-    response_customFields = requests.request(
-        "GET",
-        f'{url_trello}',
-        params=query,
-        headers=headers,
-    )
-    return response_customFields
 
 
 def calc_point_trello(trello_credential, label):

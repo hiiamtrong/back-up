@@ -1,6 +1,5 @@
 
 import json
-import callapi
 import calcpoint
 import requests
 from trelloAgent import trello
@@ -75,7 +74,6 @@ def options(option):
 
 
 def main():
-    callapi.init()
     print('1. Checkin')
     print('2. Summary Point')
     option = input('Chọn option: ')

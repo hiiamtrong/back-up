@@ -1,0 +1,24 @@
+#!/bin/zsh
+RED='\033[0;31m'
+existsgit=`{find -name '.git'}`
+if [ -z $existsgit ]
+then
+    echo "${RED} Không tìm thấy .git"
+    exit 1
+fi
+branch=`{git branch --show-current}`
+if [ -z $branch ]
+then
+    echo "${RED} Chưa có repo nào tại thư mục này"
+    exit 1
+fi
+if [ $branch = "master" ]
+then
+    echo "${RED} Không được commit tại branch master"
+    exit 1
+fi
+git commit -m "$branch"
+
+
+
+

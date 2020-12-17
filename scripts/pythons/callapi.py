@@ -1,12 +1,18 @@
 import requests
+import json
 from trelloAgent import trello
 import pydash as _
 import os.path
+import asyncio
+import aiohttp
 current_path = os.path.dirname(os.path.abspath(__file__))
+
+paths = [
+    'members', 'customFields', 'lists', 'cards', 'labels'
+]
 
 
 def init():
-
     headers = {
         "Accept": "application/json"
     }
@@ -21,47 +27,39 @@ def init():
         headers=headers,
     )
     TECH_BOARD_ID = _.find(response_boards.json(), {"name": "Team Tech"})['id']
-    url_trello = f"https://api.trello.com/1/boards/{TECH_BOARD_ID}"
-
-    response_members = requests.request(
-        "GET",
-        f'{url_trello}/members',
-        params=query,
-        headers=headers,
-    )
-    response_custom_fields = requests.request(
-        "GET",
-        f'{url_trello}/customFields',
-        params=query,
-        headers=headers,
-    )
-    response_lists = requests.request(
-        "GET",
-        f'{url_trello}/lists',
-        params=query,
-        headers=headers,
-    )
-    response_cards = requests.request(
-        "GET",
-        f'{url_trello}/cards',
-        params=query,
-        headers=headers,
-    )
-    response_labels = requests.request(
-        "GET",
-        f'{url_trello}/labels',
-        params=query,
-        headers=headers,
-    )
+    save = asyncio.get_event_loop().run_until_complete(
+        get_all_data(paths, trello, TECH_BOARD_ID))
+    for path in save:
+        path_open = open(f'{current_path}/{path}-trello.json', 'w')
+        path_open.write(json.dumps(save[path]))
     path_boards = open(f'{current_path}/boards-trello.json', 'w')
-    path_cards = open(f'{current_path}/cards-trello.json', 'w')
-    path_custom_fields = open(f'{current_path}/custom-field-trello.json', 'w')
-    path_custom_members = open(f'{current_path}/members-trello.json', 'w')
-    path_custom_lists = open(f'{current_path}/lists-trello.json', 'w')
-    path_labels = open(f'{current_path}/labels-trello.json', 'w')
     path_boards.write(response_boards.text)
-    path_cards.write(response_cards.text)
-    path_custom_fields.write(response_custom_fields.text)
-    path_custom_members.write(response_members.text)
-    path_custom_lists.write(response_lists.text)
-    path_labels.write(response_labels.text)
+
+
+async def get_all_data(paths, trello_credential, TECH_BOARD_ID):
+    async with aiohttp.ClientSession() as session:
+        save = {}
+        all_data = []
+        for path in paths:
+            data = asyncio.create_task(
+                get_data(path, session, trello_credential, save, TECH_BOARD_ID))
+            all_data.append(data)
+        await asyncio.gather(*all_data, return_exceptions=True)
+        return save
+
+
+async def get_data(path, session, trello_credential, save, TECH_BOARD_ID):
+    url_trello = f"https://api.trello.com/1/boards/{TECH_BOARD_ID}/{path}"
+    headers = {
+        "Accept": "application/json"
+    }
+    query = {
+        'token': f'{trello_credential["ACCESS_TOKEN_TRELLO"]}',
+        'key': f'{trello_credential["KEY"]}',
+    }
+    async with session.get(url_trello, headers=headers, params=query,) as response:
+        if(response.status != 200):
+            return
+        response = await response.json()
+        save[path] = response
+        return save
