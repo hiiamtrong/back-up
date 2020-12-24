@@ -17,7 +17,7 @@ credentials_path = f'{current_path}/credentials.json'
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
-row = 20
+row = 100
 
 
 def init(data):
@@ -56,7 +56,7 @@ def init(data):
     spreadsheet = service.spreadsheets().create(body=spreadsheet,
                                                 fields='spreadsheetId').execute()
     spreadsheetId = spreadsheet.get('spreadsheetId')
-    # spreadsheetId = '1fGf-tVu-7D9xNEjn5349-Oidylet1evE_92jVI2ATAc'
+    # spreadsheetId = '1tlW8hf4V6QSrsdRHuQ_5XQhV9JDToEihK3Axk2bDIn4'
     print(
         'https://docs.google.com/spreadsheets/d/{0}'.format(spreadsheetId))
 
@@ -66,7 +66,7 @@ def init(data):
     format(0, max_row, 0, current_col, service, spreadsheetId)
     row = max_row+10
     current_row = insert_users(data_with_range, cols, data, row)
-    format(row-1, current_row-1, 0, current_col, service, spreadsheetId)
+    format(row-1, current_row, 0, current_col, service, spreadsheetId)
     body = {
         'valueInputOption': "USER_ENTERED",
         'data': data_with_range
@@ -112,7 +112,7 @@ def insert_lists(data_with_range, cols, data):
 
 
 def insert_users(data_with_range, cols, data, row):
-    current_row = row+1
+    current_row = row
     users = data.get('users')
     user_names = list(users.keys())
 
@@ -124,7 +124,7 @@ def insert_users(data_with_range, cols, data, row):
         raise Exception('Label không có tasks')
     data_with_range.extend([
         {
-            'range': f'A{current_row}:A{len(user_names[0])+current_row}',
+            'range': f'A{current_row}:A{len(user_names[0])+current_row+1}',
             'values': _.chunk(user_names)
         },
         {
