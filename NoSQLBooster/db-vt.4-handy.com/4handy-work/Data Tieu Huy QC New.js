@@ -11,8 +11,8 @@ db.stockentries.aggregate()
     .match({
         type: 'trash',
         created: {
-            $gte: moment('2020-12-04').startOf('day').toDate(),
-            $lte: moment('2020-12-04').endOf('day').toDate()
+            $gte: moment('2020-12-08').startOf('day').toDate(),
+            $lte: moment('2020-12-14').endOf('day').toDate()
         },
         currentStatus: { $ne: 'deleted' },
         outlet: { $in: _.map(outlets, '_id') }
@@ -28,5 +28,5 @@ db.stockentries.aggregate()
            outlet  = mapOutlet[`${it.outlet}`]
         }
         const item = it.items
-        console.log(`${outlet}\t${moment(it.created).format("L LT")}\t${item.sku}\t${item.description}\t${item.quantity}\t=HYPERLINK("${link}${it._id.valueOf()}";"${it.stockEntryId}")\t${item.note.replace(/(\s|\n)/g,' ')}\t${item.saleCodeId ? item.saleCodeId : ""}\t${item.price}\t${item.cogs}`)
+        console.log(`${outlet}\t${moment(it.created).format("L")}\t${item.sku}\t${item.description}\t${item.quantity}\t=HYPERLINK("${link}${it._id.valueOf()}";"${it.stockEntryId}")\t${item.note.replace(/(\s|\n)/g,' ')}\t${item.saleCodeId ? item.saleCodeId : ""}\t${item.price}\t${item.cogs}`)
     })
