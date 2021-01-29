@@ -17,7 +17,7 @@ then
     echo "${RED} Không được commit tại branch master"
     exit 1
 fi
-git commit -m "$branch"
+git commit -m ":tada: $branch"
 
 
 
