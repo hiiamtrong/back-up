@@ -56,6 +56,7 @@ def get_task_trello():
 def option_summary_point():
     path_labels = open(f"{current_path}/labels-trello.json")
     labels = json.loads(path_labels.read())
+    labels.append({"id": "all", "isBoard": "5958d029f55bf11523061e25", "name": "all"})
     labels_map = {}
     for index, label in enumerate(labels):
         print(f"{index}. {label['name']}\n")
