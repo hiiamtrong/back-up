@@ -62,9 +62,7 @@ def init(data):
     print("https://docs.google.com/spreadsheets/d/{0}".format(spreadsheetId))
     sh = gc.open_by_key(spreadsheetId)
     try:
-        worksheet_summary = sh.add_worksheet(
-            title=f"{date.today()} Tổng hợp", rows="100", cols="20"
-        )
+
         worksheet_cards = sh.add_worksheet(
             title=f"{date.today()} Dữ liệu", rows="100", cols="20"
         )
@@ -73,15 +71,10 @@ def init(data):
             print(f"Đã tồn tại worksheet {date.today()}")
         pass
     worksheet_cards = sh.worksheet(f"{date.today()} Dữ liệu")
-    worksheet_summary = sh.worksheet(f"{date.today()} Tổng hợp")
-    # cols = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
     df_card = insert_cards(data)
     worksheet_cards.update([df_card.columns.values.tolist()] + df_card.values.tolist())
     df_summary = summary_point(data)
-    worksheet_summary.update(
-        [df_summary.columns.values.tolist()] + df_summary.values.tolist()
-    )
 
 
 def insert_cards(data):
@@ -137,8 +130,7 @@ def summary_point(data):
         worksheet_data.append(data)
 
     _.for_each(
-        summarize_cards,
-        callback,
+        summarize_cards, callback,
     )
     df = pd.DataFrame(np.array(worksheet_data), columns=fields)
     return df

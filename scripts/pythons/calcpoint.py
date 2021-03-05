@@ -45,16 +45,16 @@ for label in labels:
 
 def calc_point_trello(trello_credential, label):
     existsLabel = _.find(labels_map, lambda _label: _label == label)
-    if not existsLabel:
-        raise Exception(f"Label {label} không tồn tại")
     cards_with_points = _.filter_(
         asyncio.get_event_loop().run_until_complete(
             get_all_point(cards, trello_credential)
         )
     )
-    cards_with_points = _.filter_(
-        cards_with_points, lambda card: label in _.map_(card["labels"], "name")
-    )
+    if existsLabel:
+        cards_with_points = _.filter_(
+            cards_with_points, lambda card: label in _.map_(card["labels"], "name")
+        )
+
     for card in cards_with_points:
         useful_info = {
             "name": card["name"],
@@ -99,11 +99,7 @@ async def get_point(card, session, trello_credential):
         "token": f'{trello_credential["ACCESS_TOKEN_TRELLO"]}',
         "key": f'{trello_credential["KEY"]}',
     }
-    async with session.get(
-        url_trello,
-        headers=headers,
-        params=query,
-    ) as response:
+    async with session.get(url_trello, headers=headers, params=query,) as response:
         if response.status != 200:
             return
         response = await response.json()
