@@ -5,6 +5,7 @@ import requests
 import asyncio
 import aiohttp
 import os.path
+from DateTime import DateTime
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -56,6 +57,7 @@ def calc_point_trello(trello_credential, label):
         )
 
     for card in cards_with_points:
+        dueDate = DateTime(card["due"]).Date() if card["due"] else ""
         useful_info = {
             "name": card["name"],
             "id": card["id"],
@@ -64,6 +66,7 @@ def calc_point_trello(trello_credential, label):
             "list": lists_map[card["idList"]],
             "listId": card["idList"],
             "link": "https://trello.com/c/" + card["shortLink"],
+            "dueDate": dueDate,
         }
         if not len(card["idMembers"]):
             summary_cards.append(useful_info)

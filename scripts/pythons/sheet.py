@@ -73,13 +73,25 @@ def init(data):
     worksheet_cards = sh.worksheet(f"{date.today()} Dữ liệu")
 
     df_card = insert_cards(data)
-    worksheet_cards.update([df_card.columns.values.tolist()] + df_card.values.tolist())
-    df_summary = summary_point(data)
+
+    worksheet_cards.update(
+        [df_card.columns.values.tolist()] + df_card.to_numpy().tolist()
+    )
+    # df_summary = summary_point(data)
 
 
 def insert_cards(data):
     cards = data.get("cards")
-    fields = ["STT", "Username", "Card Title", "Label", "Card Point", "Status", "Link"]
+    fields = [
+        "STT",
+        "Username",
+        "Card Title",
+        "Label",
+        "Card Point",
+        "Status",
+        "Link",
+        "Due Date",
+    ]
     current_row = 2
     worksheet_data = []
     for card in cards:
@@ -92,11 +104,11 @@ def insert_cards(data):
             card["point"],
             card["list"],
             card["link"],
+            card["dueDate"],
         ]
         current_row += 1
         worksheet_data.append(useful_info)
     df = pd.DataFrame(np.array(worksheet_data), columns=fields)
-
     return df
 
 
