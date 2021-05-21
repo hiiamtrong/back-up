@@ -15,7 +15,10 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 credentials_path = f"{current_path}/credentials.json"
 
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
+SCOPES = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive",
+]
 
 # The ID and range of a sample spreadsheet.
 row = 100
@@ -57,27 +60,63 @@ def init(data):
         .create(body=spreadsheet, fields="spreadsheetId")
         .execute()
     )
-    # spreadsheetId = spreadsheet.get("spreadsheetId")
-    spreadsheetId = "1Kv4CMmGVmyd3UTMjZaz2jML_rumw-VS2SUERZzqVJn8"
+    spreadsheetId = spreadsheet.get("spreadsheetId")
+    # spreadsheetId = "1Kv4CMmGVmyd3UTMjZaz2jML_rumw-VS2SUERZzqVJn8"
     print("https://docs.google.com/spreadsheets/d/{0}".format(spreadsheetId))
     sh = gc.open_by_key(spreadsheetId)
+    sh.share(
+        "giangnam10a2@gmail.com",
+        perm_type="user",
+        role="reader",
+    )
+    sh.share(
+        "chuthang205@gmail.com",
+        perm_type="user",
+        role="writer",
+    )
+
+    sh.share(
+        "truongmanh0912@gmail.com",
+        perm_type="user",
+        role="reader",
+    )
+
+    sh.share(
+        "thanhquang2805@gmail.com",
+        perm_type="user",
+        role="reader",
+    )
+
     try:
 
         worksheet_cards = sh.add_worksheet(
             title=f"{date.today()} Dữ liệu", rows="100", cols="20"
         )
+
+    except Exception as e:
+        if f"A sheet with the name {date.today()} already exists" in str(e):
+            print(f"Đã tồn tại worksheet {date.today()}")
+        pass
+
+    try:
+
+        worksheet_cards = sh.add_worksheet(
+            title=f"{date.today()} Pivot", rows="100", cols="20"
+        )
+
     except Exception as e:
         if f"A sheet with the name {date.today()} already exists" in str(e):
             print(f"Đã tồn tại worksheet {date.today()}")
         pass
     worksheet_cards = sh.worksheet(f"{date.today()} Dữ liệu")
-
+    worksheet_pivot = sh.worksheet(f"{date.today()} Pivot")
     df_card = insert_cards(data)
 
     worksheet_cards.update(
         [df_card.columns.values.tolist()] + df_card.to_numpy().tolist()
     )
-    # df_summary = summary_point(data)
+    pivot = summary_point(df_card)
+    worksheet_pivot.update([pivot.columns.values.tolist()] + pivot.to_numpy().tolist())
 
 
 def insert_cards(data):
@@ -109,43 +148,20 @@ def insert_cards(data):
         current_row += 1
         worksheet_data.append(useful_info)
     df = pd.DataFrame(np.array(worksheet_data), columns=fields)
+    df["Card Point"] = df["Card Point"].astype(int)
     return df
 
 
 def summary_point(data):
-    cards = data.get("cards")
-    lists = data.get("lists")
-    fields = [
-        "Username",
-    ]
-    fields.extend(_.values(lists))
-    worksheet_data = []
-    summarize_cards = {}
-    for card in cards:
-        user = card.get("username", "Chưa có")
-        _list = card.get("list")
-        if not summarize_cards.get(user):
-            summarize_cards[user] = {
-                "2. Todo": 0,
-                "3.Doing": 0,
-                "4. Edit": 0,
-                "5. QC": 0,
-                "6. Done": 0,
-            }
-        summarize_cards[user][_list] = int(summarize_cards[user][_list]) + int(
-            card["point"]
-        )
-
-    def callback(card, key):
-        data = [key]
-        data.extend(_.values(card))
-        worksheet_data.append(data)
-
-    _.for_each(
-        summarize_cards, callback,
-    )
-    df = pd.DataFrame(np.array(worksheet_data), columns=fields)
-    return df
+    pivot_table = pd.pivot_table(
+        data,
+        values="Card Point",
+        index="Username",
+        columns="Status",
+        aggfunc="sum",
+        fill_value=0,
+    ).reset_index()
+    return pivot_table
 
 
 if __name__ == "__main__":

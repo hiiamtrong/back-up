@@ -6,6 +6,7 @@ import asyncio
 import aiohttp
 import os.path
 from DateTime import DateTime
+import copy
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -72,9 +73,10 @@ def calc_point_trello(trello_credential, label):
             summary_cards.append(useful_info)
         else:
             for member in card["idMembers"]:
-                useful_info["username"] = members_map[member]
-                useful_info["userId"] = member
-                summary_cards.append(useful_info)
+                clone_useful_info = copy.deepcopy(useful_info)
+                clone_useful_info["username"] = members_map[member]
+                clone_useful_info["userId"] = member
+                summary_cards.append(clone_useful_info)
 
     return {
         "cards": summary_cards,
@@ -102,7 +104,11 @@ async def get_point(card, session, trello_credential):
         "token": f'{trello_credential["ACCESS_TOKEN_TRELLO"]}',
         "key": f'{trello_credential["KEY"]}',
     }
-    async with session.get(url_trello, headers=headers, params=query,) as response:
+    async with session.get(
+        url_trello,
+        headers=headers,
+        params=query,
+    ) as response:
         if response.status != 200:
             return
         response = await response.json()

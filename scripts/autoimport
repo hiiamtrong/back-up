@@ -6,21 +6,23 @@ query=$4
 notify=true
 
 while [ -n "$1" ]; do # while loop starts
-
-	case "$1" in
-
-	-n) notify=false ;;
-
-	esac
-
-	shift
-
+    
+    case "$1" in
+        
+        -n) notify=false ;;
+        
+    esac
+    
+    shift
+    
 done
 
 
 database="4handy-work-dev"
 folder="/home/$USER/work/work-4handy-db-clone"
 public="/home/$USER/back-up/scripts/public"
+# mongo_local="192.168.1.44"
+mongo_local="localhost"
 mkdir -p $folder
 if ([ -z $sort ] || [ -z $limit ])
 then
@@ -30,14 +32,14 @@ then
         notify-send -i $public/mongo.png "Mongo-export" "Done"
         paplay $public/success.wav
     fi
-    mongoimport --uri "mongodb://localhost:27017/$database" --drop --collection=$collection --file=$folder/$collection.json
-
+    mongoimport --uri "mongodb://$mongo_local:27017/$database" --drop --collection=$collection --file=$folder/$collection.json
+    
     if ("$notify" = true)
     then
         notify-send -i  $public/mongo.png "Mongo-import" "Done"
         paplay $public/success.wav
     fi
-
+    
     exit
 fi
 mongoexport --uri $MONGO_URL --sort={$sort:-1} --limit=$limit --collection=$collection --out=$folder/$collection.json
@@ -48,11 +50,11 @@ then
     paplay $public/success.wav
 fi
 
-mongoimport --uri "mongodb://localhost:27017/$database" --drop --collection=$collection --file=$folder/$collection.json
+mongoimport --uri "mongodb://$mongo_local:27017/$database" --drop --collection=$collection --file=$folder/$collection.json
 
 if ("$notify" = true)
 then
-notify-send -i $public/mongo.png "Mongo-import" "Done"
-paplay $public/success.wav
+    notify-send -i $public/mongo.png "Mongo-import" "Done"
+    paplay $public/success.wav
 fi
 exit
